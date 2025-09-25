@@ -189,6 +189,3 @@ BEGIN
         );
     END LOOP;
 END $$;
-
--- 9. (Optionnel) Supprimer anciennes colonnes ID après validation
--- ALTER TABLE schema_name.table_name DROP COLUMN old_column;
