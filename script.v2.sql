@@ -65,25 +65,28 @@ DO $$
 DECLARE
     fk RECORD;
     i INT;
+    col TEXT;
+    where_clause TEXT;
 BEGIN
     FOR fk IN SELECT * FROM tmp_fk LOOP
         -- Ajouter nouvelle colonne UUID dans table enfant
         EXECUTE format('ALTER TABLE %I.%I ADD COLUMN %I_uuid UUID;',
                        fk.child_schema, fk.child_table, fk.constraint_name);
 
-        -- Mettre à jour la colonne UUID avec la valeur correspondante du parent
-        EXECUTE format('UPDATE %I.%I c SET %I_uuid = p.id_uuid FROM %I.%I p WHERE ',
-                       fk.child_schema, fk.child_table, fk.constraint_name,
-                       fk.parent_schema, fk.parent_table);
-
-        -- Construire la clause WHERE pour FK composite ou simple
+        -- Construire clause WHERE pour FK composite ou simple
+        where_clause := '';
         FOR i IN 1..array_length(fk.fk_columns,1) LOOP
             IF i=1 THEN
-                EXECUTE format('c.%I = p.%I_old', fk.fk_columns[i], fk.referenced_columns[i]);
+                where_clause := format('c.%I = p.%I_old', fk.fk_columns[i], fk.referenced_columns[i]);
             ELSE
-                EXECUTE format(' AND c.%I = p.%I_old', fk.fk_columns[i], fk.referenced_columns[i]);
+                where_clause := where_clause || format(' AND c.%I = p.%I_old', fk.fk_columns[i], fk.referenced_columns[i]);
             END IF;
         END LOOP;
+
+        -- Mettre à jour UUID FK
+        EXECUTE format('UPDATE %I.%I c SET %I_uuid = p.id_uuid FROM %I.%I p WHERE %s;',
+                       fk.child_schema, fk.child_table, fk.constraint_name,
+                       fk.parent_schema, fk.parent_table, where_clause);
 
         -- Backup anciennes colonnes FK
         FOREACH col IN ARRAY fk.fk_columns LOOP
@@ -114,8 +117,9 @@ DECLARE
     t RECORD;
 BEGIN
     FOR t IN SELECT table_schema, table_name FROM tmp_pk LOOP
-        EXECUTE format('
-            CREATE OR REPLACE FUNCTION %I.%I_generate_uuid()
+        -- Créer la fonction pour générer UUID
+        EXECUTE format($func$
+            CREATE OR REPLACE FUNCTION %I_generate_uuid()
             RETURNS TRIGGER AS $$
             BEGIN
                 IF NEW.id_uuid IS NULL THEN
@@ -123,19 +127,19 @@ BEGIN
                 END IF;
                 RETURN NEW;
             END;
-            $$ LANGUAGE plpgsql;',
-            t.table_schema, t.table_name
-        );
+            $$ LANGUAGE plpgsql;
+        $func$, t.table_name);
 
+        -- Créer le trigger
         EXECUTE format('
             DROP TRIGGER IF EXISTS trigger_%I_id_uuid ON %I.%I;
             CREATE TRIGGER trigger_%I_id_uuid
             BEFORE INSERT ON %I.%I
             FOR EACH ROW
-            EXECUTE FUNCTION %I.%I_generate_uuid();',
+            EXECUTE FUNCTION %I_generate_uuid();',
             t.table_name, t.table_schema, t.table_name,
             t.table_name, t.table_schema, t.table_name,
-            t.table_schema, t.table_name
+            t.table_name
         );
     END LOOP;
 END $$;
