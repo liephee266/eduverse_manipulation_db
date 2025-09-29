@@ -36,7 +36,7 @@ Créez une nouvelle ligne avec les valeurs suivantes :
 |---------------------------|------------------------------------------------------|
 | **Action**                | `update_r` *(sélectionnée depuis la liste de `only_action`)* |
 | **Libellé**               | `Qui peut modifier le champ R d’un macroprocessus ?` |
-| **Champs**                | *(laisser vide ou indiquer `r` si utilisé plus tard)* |
+| **Champs**                | *(laisser vide ou indiquer `le champs fonction du thème (nom tech, nom tech)` )* |
 
 > 💡 Ce libellé apparaîtra dans l’interface de gestion des règles (`access_rule`) pour aider l’administrateur à comprendre le sens de la règle.
 
