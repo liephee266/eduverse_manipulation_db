@@ -10,6 +10,10 @@ Permettre aux **Managers** de **modifier le champ R** (Responsable ?) dans les m
 ## 🔧 Étapes de configuration
 
 ### ✅ Étape 1 : Vérifier l’action technique dans `only_action` *(réservé aux développeurs)*
+#### Si cette est vide, Accédez à  :  
+🔗 `https://api.app1.webard.fr/public/action_access_rule//debug/init-access/{id_society}`
+avec {id_society} l'id de la société correspondante  
+
 
 La table `only_action` **doit déjà contenir** l’action suivante (elle est normalement préchargée) :
 
@@ -78,3 +82,5 @@ access_rule → Thème = macroprocessus, Fonction = Manager
 - **Tester avec un utilisateur "Manager"** après configuration.
 - Si plusieurs rôles doivent avoir accès (ex. Manager + Superviseur), listez-les tous dans le champ **"Qui (Fonction)"**.
 - les fonctions admins qui sont prises en compte actuellement sont : **Administrateur WebArd SMEO**, **Administrateur WebArd**, **Responsable SMEO**, **Resp Infogérance**
+- 
+
