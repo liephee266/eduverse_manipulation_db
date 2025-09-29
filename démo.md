@@ -77,7 +77,4 @@ access_rule → Thème = macroprocessus, Fonction = Manager
 - **Vérifier l’orthographe exacte** du `nom_tech` (ex. pas d’espace, pas de majuscule inattendue).
 - **Tester avec un utilisateur "Manager"** après configuration.
 - Si plusieurs rôles doivent avoir accès (ex. Manager + Superviseur), listez-les tous dans le champ **"Qui (Fonction)"**.
-
----
-
-Souhaitez-vous maintenant un exemple pour **interdire la suppression des IAS** sauf aux administrateurs ?
+- les fonctions admins qui sont prises en compte actuellement sont : **Administrateur WebArd SMEO**, **Administrateur WebArd**, **Responsable SMEO**, **Resp Infogérance**
