@@ -21,7 +21,7 @@ La table `only_action` **doit déjà contenir** l’action suivante :
 |----------------|------------------------------------------|
 | `update_r`     | Modifier le champ R d’un macroprocessus  |
 
-> ⚠️ Cette table **n’est pas modifiable** via l’interface admin. Si l’action n’existe pas, il faut contacter un développeur.
+> ⚠️ Cette table **est sensible et ne doit pas être sujette aux mauvaises manipulation **. Si l’action n’existe pas, il faut contacter un développeur.
 
 ---
 
