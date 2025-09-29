@@ -82,5 +82,5 @@ access_rule → Thème = macroprocessus, Fonction = Manager
 - **Tester avec un utilisateur "Manager"** après configuration.
 - Si plusieurs rôles doivent avoir accès (ex. Manager + Superviseur), listez-les tous dans le champ **"Qui (Fonction)"**.
 - les fonctions admins qui sont prises en compte actuellement sont : **Administrateur WebArd SMEO**, **Administrateur WebArd**, **Responsable SMEO**, **Resp Infogérance**
-- 
+  
 
