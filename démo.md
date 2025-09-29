@@ -15,7 +15,7 @@ Permettre aux **Managers** de **modifier le champ R** (Responsable ?) dans les m
 avec {id_society} l'id de la société correspondante  
 
 
-La table `only_action` **doit déjà contenir** l’action suivante (elle est normalement préchargée) :
+La table `only_action` **doit déjà contenir** l’action suivante :
 
 | `nom_tech`     | `libelle`                                |
 |----------------|------------------------------------------|
