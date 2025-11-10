@@ -1,4 +1,4 @@
-Voici une roadmap claire, étape par étape, pour terminer la migration de votre base de données de `integer` vers `uuid_type`, en ciblant spécifiquement les points 3 (Clés Étrangères), 4 (Séquences) et 5 (Contraintes et Index) à partir du dump fourni.
+Voici une roadmap claire, étape par étape, pour terminer la migration de la base de données Eduverse de `integer` vers `uuid_type`, en ciblant spécifiquement les points 3 (Clés Étrangères), 4 (Séquences) et 5 (Contraintes et Index) à partir du dump .
 
 **Objectif Final :** Toutes les clés primaires et étrangères dans la base de données doivent utiliser le type `public.uuid_type` avec `uuid_generate_v4()` comme valeur par défaut. Les séquences `integer` associées aux anciennes colonnes doivent être supprimées. Toutes les contraintes et index doivent être cohérents avec les nouveaux types.
 
@@ -8,7 +8,7 @@ Voici une roadmap claire, étape par étape, pour terminer la migration de votre
 
 #### **Étape 0 : Préparation Critique (À FAIRE AVANT TOUT)**
 
-1.  **Créez une sauvegarde complète de la base de données actuelle.**
+1.  **Créez une sauvegarde complète de la base de données actuelle.** (Juste au cas où)
     *   `pg_dump -U votre_utilisateur -d nom_de_votre_base > sauvegarde_avant_migration.sql`
     *   **Raison :** Cette migration est invasive. Une sauvegarde vous permet de revenir en arrière en cas de problème.
 2.  **Identifiez les tables "hors-sujet" :**
