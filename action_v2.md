@@ -38,18 +38,27 @@ Avant de commencer, vous devez créer le rôle `wxu_school` qui sera le proprié
     ```bash
     psql -U postgres -d structure_uuid_v2 -f structure_uuid.sql
     ```
-
----
-
-## Application des Correctifs
-
-Maintenant, connectez-vous à votre base de données pour exécuter les commandes de migration.
-
-```bash
-psql -U postgres -d structure_uuid_v2
-```
-
-### Phase 1 : Ajout des Tables Manquantes
+    
+    ---
+    
+    ## Application des Correctifs
+    
+    Maintenant, connectez-vous à votre base de données pour exécuter les commandes de migration.
+    
+    ```bash
+    psql -U postgres -d structure_uuid_v2
+    ```
+    
+    ### Phase 1.5 : Correction du type de données de la clé étrangère
+    
+    Copiez et exécutez la commande SQL suivante dans votre session `psql` pour corriger une incohérence de type de données qui empêche la création d'une clé étrangère.
+    
+    ```sql
+    ALTER TABLE public.student_report_card_grades
+    ALTER COLUMN report_card_comment_id TYPE public.uuid_type
+    USING report_card_comment_id::text::uuid;
+    ```
+    ### Phase 1 : Ajout des Tables Manquantes
 
 Copiez et exécutez les commandes SQL suivantes dans votre session `psql`.
 
@@ -166,11 +175,11 @@ Les requêtes suivantes ne devraient retourner aucune ligne.
 -- Vérifier l'absence de séquences
 SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
 
--- Vérifier que tous les objets appartiennent à wxu_school
+-- Vérifier que tous les objets appartiennent à wxu_school (version corrigée)
 SELECT n.nspname as schema_name, c.relname as table_name, pg_get_userbyid(c.relowner) as owner
 FROM pg_class c
 LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
-WHERE n.nspname NOT IN ('pg_catalog', 'information_schema')
+WHERE n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast')
   AND pg_get_userbyid(c.relowner) <> 'wxu_school';
 ```
 
